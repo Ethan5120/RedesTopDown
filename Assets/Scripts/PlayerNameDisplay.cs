@@ -43,4 +43,13 @@ public class PlayerNameDisplay : MonoBehaviourPun
             nameLabel.transform.position = screenPosition;
         }
     }
+
+    void OnDestroy()
+    {
+        // Destruir el nombre de usuario cuando el jugador se destruye
+        if (nameLabel != null)
+        {
+            Destroy(nameLabel);
+        }
+    }
 }
