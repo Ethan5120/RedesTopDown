@@ -11,7 +11,6 @@ public class PlayerAim : MonoBehaviourPun
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out RaycastHit hit))
             {
-
                 Vector3 direction = hit.point - transform.position;
                 direction.y = 0;
 

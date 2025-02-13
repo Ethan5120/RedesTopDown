@@ -18,22 +18,36 @@ public class Bullet : MonoBehaviourPun
         //Destuir el projectil despues de un tiempo
         if(photonView.IsMine)
         {
-            Destroy(gameObject, lifeTime);
+            Invoke("DestroyBullet", 1f);
         }
     }
 
     void Update()
     {
-        //Mover el objeto
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        if(photonView.IsMine)
+        {
+            //Mover el objeto
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(photonView.IsMine && !other.CompareTag("Player"))
+        if(photonView.IsMine)
         {
-            //Aqui puedes añadir logica para dañar el jugador
-            Debug.Log("Jugador dañado");
+            if(!other.CompareTag("Player"))
+            {
+                DestroyBullet();
+            }
+        }
+    }
+
+    void DestroyBullet()
+    {
+        // Solo el dueño del PhotonView ejecuta esta logico
+        if(photonView.IsMine)
+        {
+            //Destuye la bala en la red
             PhotonNetwork.Destroy(gameObject);
         }
     }
