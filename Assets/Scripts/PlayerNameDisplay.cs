@@ -1,3 +1,4 @@
+using System;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class PlayerNameDisplay : MonoBehaviourPun
 
             // Asignar el nombre de usuario al texto
             TextMeshProUGUI nameText = nameLabel.GetComponent<TextMeshProUGUI>();
+            photonView.Owner.NickName = $"Player {PhotonNetwork.PlayerList.Length}";
             nameText.text = photonView.Owner.NickName;
 
             //Asignar un color diferente para el jugador local
@@ -53,3 +55,6 @@ public class PlayerNameDisplay : MonoBehaviourPun
         }
     }
 }
+
+
+
