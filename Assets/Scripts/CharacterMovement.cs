@@ -21,7 +21,7 @@ public class CharacterMovement : MonoBehaviourPun
             float z = Input.GetAxisRaw("Vertical");
 
 
-            Vector3 dir = new Vector3(x, 0f, z);
+            Vector3 dir = new Vector3(x, -1f, z);
             if(dir.magnitude > 0)
             {
                 dir.Normalize();
