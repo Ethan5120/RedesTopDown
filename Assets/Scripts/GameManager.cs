@@ -1,6 +1,6 @@
-using Photon.Pun;
-using TMPro;
 using UnityEngine;
+using TMPro;
+using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun
 {
