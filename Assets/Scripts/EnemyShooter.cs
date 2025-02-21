@@ -60,7 +60,7 @@ public class EnemyShooter : MonoBehaviourPun
             Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
 
             // Calcular la rotación necesaria para mirar hacia el jugador
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
 
             // Suavizar la rotación hacia el jugador
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);

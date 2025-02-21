@@ -146,15 +146,9 @@ public class PlayerNameDisplay : MonoBehaviourPun
             float healthPercentage = (float)currentHealth / 100f; // Asumimos que 100 es el valor máximo de vida
 
             // Actualizar el color según el umbral
-            if (healthPercentage <= 30f) // Umbral de vida baja
-            {
-                healthText.color = Color.red;
-            }
-            else
-            {
-                // Interpolar color entre rojo y verde basado en el porcentaje de vida
-                healthText.color = Color.Lerp(Color.red, Color.green, healthPercentage / 100f);
-            }
+            float targetPoint = 1 - healthPercentage;
+            healthText.color = Color.Lerp(Color.green, Color.red, targetPoint);
+            
         }
     }
 
