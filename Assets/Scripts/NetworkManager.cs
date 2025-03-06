@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRandomRoom();
     }
 
-    public override void OnJoinRandomFailed(short returnCode, string message)
+     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log("No se encontró una sala, creando una nueva...");
         // Crear una nueva sala si no hay ninguna disponible
@@ -26,7 +26,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Unido a una sala.");
-        // Instanciar al jugador en la escena
-        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+        // Obtener una posición de spawn aleatoria
+        Vector3 spawnPosition = SpawnPointManager.Instance.GetRandomSpawnPoint();
+        // Instanciar al jugador en el punto de spawn
+        PhotonNetwork.Instantiate("Player", spawnPosition, Quaternion.identity);
     }
 }
