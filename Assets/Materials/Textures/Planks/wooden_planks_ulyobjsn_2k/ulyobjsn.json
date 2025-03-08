@@ -1,0 +1,608 @@
+{
+  "assetCategories": {
+    "surface": {
+      "wood": {
+        "plank": {}
+      }
+    }
+  },
+  "averageColor": "#000000",
+  "categories": [
+    "surface",
+    "wood",
+    "plank"
+  ],
+  "comp_version": 1,
+  "description": "",
+  "displacementBias": 0.989227,
+  "displacementCalibrationAccuracy": 0.994452,
+  "displacementScale": 0.658433,
+  "environment": {
+    "biome": "undefined",
+    "region": "Europe"
+  },
+  "highest_available_res": 8192,
+  "id": "ulyobjsn",
+  "json": {
+    "contentLength": 12724,
+    "uri": "ulyobjsn.json"
+  },
+  "maps": [
+    {
+      "averageColor": "#F0F0F0",
+      "bitDepth": 32,
+      "colorSpace": "sRGB",
+      "contentLength": 77125034,
+      "maxIntensity": 255,
+      "mimeType": "image/x-exr",
+      "minIntensity": 39,
+      "name": "AO",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "ao",
+      "uri": "ulyobjsn_8K_AO.exr"
+    },
+    {
+      "averageColor": "#F0F0F0",
+      "bitDepth": 8,
+      "colorSpace": "sRGB",
+      "contentLength": 15460155,
+      "maxIntensity": 255,
+      "mimeType": "image/jpeg",
+      "minIntensity": 39,
+      "name": "AO",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "ao",
+      "uri": "ulyobjsn_8K_AO.jpg"
+    },
+    {
+      "averageColor": "#7B6554",
+      "bitDepth": 16,
+      "colorSpace": "sRGB",
+      "contentLength": 211667520,
+      "maxIntensity": 129,
+      "mimeType": "image/x-exr",
+      "minIntensity": 69,
+      "name": "Basecolor",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "basecolor",
+      "uri": "ulyobjsn_8K_Basecolor.exr"
+    },
+    {
+      "averageColor": "#7B6554",
+      "bitDepth": 8,
+      "colorSpace": "sRGB",
+      "contentLength": 31812029,
+      "maxIntensity": 129,
+      "mimeType": "image/jpeg",
+      "minIntensity": 69,
+      "name": "Basecolor",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "basecolor",
+      "uri": "ulyobjsn_8K_Basecolor.jpg"
+    },
+    {
+      "averageColor": "#808080",
+      "bitDepth": 32,
+      "colorSpace": "Linear",
+      "contentLength": 188368101,
+      "maxIntensity": 255,
+      "mimeType": "image/x-exr",
+      "minIntensity": 0,
+      "name": "Bump",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "bump",
+      "uri": "ulyobjsn_8K_Bump.exr"
+    },
+    {
+      "averageColor": "#808080",
+      "bitDepth": 8,
+      "colorSpace": "Linear",
+      "contentLength": 15846864,
+      "maxIntensity": 255,
+      "mimeType": "image/jpeg",
+      "minIntensity": 0,
+      "name": "Bump",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "bump",
+      "uri": "ulyobjsn_8K_Bump.jpg"
+    },
+    {
+      "averageColor": "#FFFFFF",
+      "bitDepth": 32,
+      "colorSpace": "sRGB",
+      "contentLength": 205264800,
+      "maxIntensity": 255,
+      "mimeType": "image/x-exr",
+      "minIntensity": 255,
+      "name": "Cavity",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "cavity",
+      "uri": "ulyobjsn_8K_Cavity.exr"
+    },
+    {
+      "averageColor": "#FFFFFF",
+      "bitDepth": 8,
+      "colorSpace": "sRGB",
+      "contentLength": 30944463,
+      "maxIntensity": 255,
+      "mimeType": "image/jpeg",
+      "minIntensity": 255,
+      "name": "Cavity",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "cavity",
+      "uri": "ulyobjsn_8K_Cavity.jpg"
+    },
+    {
+      "averageColor": "#818181",
+      "bitDepth": 32,
+      "colorSpace": "Linear",
+      "contentLength": 244683945,
+      "maxIntensity": 137,
+      "mimeType": "image/x-exr",
+      "minIntensity": 43,
+      "name": "Displacement",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "displacement",
+      "uri": "ulyobjsn_8K_Displacement.exr"
+    },
+    {
+      "averageColor": "#818181",
+      "bitDepth": 8,
+      "colorSpace": "Linear",
+      "contentLength": 5468494,
+      "maxIntensity": 137,
+      "mimeType": "image/jpeg",
+      "minIntensity": 43,
+      "name": "Displacement",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "displacement",
+      "uri": "ulyobjsn_8K_Displacement.jpg"
+    },
+    {
+      "averageColor": "#373737",
+      "bitDepth": 32,
+      "colorSpace": "Linear",
+      "contentLength": 81116664,
+      "maxIntensity": 60,
+      "mimeType": "image/x-exr",
+      "minIntensity": 25,
+      "name": "Gloss",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "gloss",
+      "uri": "ulyobjsn_8K_Gloss.exr"
+    },
+    {
+      "averageColor": "#373737",
+      "bitDepth": 8,
+      "colorSpace": "Linear",
+      "contentLength": 10401432,
+      "maxIntensity": 60,
+      "mimeType": "image/jpeg",
+      "minIntensity": 25,
+      "name": "Gloss",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "gloss",
+      "uri": "ulyobjsn_8K_Gloss.jpg"
+    },
+    {
+      "averageColor": "#8282FD",
+      "bitDepth": 16,
+      "colorSpace": "Linear",
+      "contentLength": 150095131,
+      "maxIntensity": 174,
+      "mimeType": "image/x-exr",
+      "minIntensity": 102,
+      "name": "Normal",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "normal",
+      "uri": "ulyobjsn_8K_Normal.exr"
+    },
+    {
+      "averageColor": "#8282FD",
+      "bitDepth": 8,
+      "colorSpace": "Linear",
+      "contentLength": 37454472,
+      "maxIntensity": 174,
+      "mimeType": "image/jpeg",
+      "minIntensity": 102,
+      "name": "Normal",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "normal",
+      "uri": "ulyobjsn_8K_Normal.jpg"
+    },
+    {
+      "averageColor": "#C8C8C8",
+      "bitDepth": 32,
+      "colorSpace": "Linear",
+      "contentLength": 86102516,
+      "maxIntensity": 230,
+      "mimeType": "image/x-exr",
+      "minIntensity": 195,
+      "name": "Roughness",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "roughness",
+      "uri": "ulyobjsn_8K_Roughness.exr"
+    },
+    {
+      "averageColor": "#C8C8C8",
+      "bitDepth": 8,
+      "colorSpace": "Linear",
+      "contentLength": 9929567,
+      "maxIntensity": 230,
+      "mimeType": "image/jpeg",
+      "minIntensity": 195,
+      "name": "Roughness",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "roughness",
+      "uri": "ulyobjsn_8K_Roughness.jpg"
+    },
+    {
+      "averageColor": "#383838",
+      "bitDepth": 16,
+      "colorSpace": "sRGB",
+      "contentLength": 200820613,
+      "maxIntensity": 56,
+      "mimeType": "image/x-exr",
+      "minIntensity": 56,
+      "name": "Specular",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "specular",
+      "uri": "ulyobjsn_8K_Specular.exr"
+    },
+    {
+      "averageColor": "#383838",
+      "bitDepth": 8,
+      "colorSpace": "sRGB",
+      "contentLength": 16931038,
+      "maxIntensity": 56,
+      "mimeType": "image/jpeg",
+      "minIntensity": 56,
+      "name": "Specular",
+      "physicalSize": "2x2",
+      "resolution": "8192x8192",
+      "type": "specular",
+      "uri": "ulyobjsn_8K_Specular.jpg"
+    }
+  ],
+  "meta": [
+    {
+      "key": "scanArea",
+      "name": "Scan Area",
+      "value": "2x2 m"
+    },
+    {
+      "key": "height",
+      "name": "Height",
+      "value": "0.074 m"
+    },
+    {
+      "key": "tileable",
+      "name": "Tileable",
+      "value": true
+    },
+    {
+      "key": "tiling_directions",
+      "name": "Tiling Directions",
+      "value": [
+        "x",
+        "y"
+      ]
+    },
+    {
+      "key": "texelDensity",
+      "name": "Texel Density",
+      "value": "4096 px/m"
+    },
+    {
+      "key": "calibration",
+      "name": "Calibration",
+      "value": "GretagMacbeth ColorChecker Color Rendition Chart"
+    },
+    {
+      "key": "scanner",
+      "name": "Scanner",
+      "value": "MKX"
+    }
+  ],
+  "models": [],
+  "name": "Wooden Planks",
+  "pack": null,
+  "physicalSize": null,
+  "points": 2,
+  "previews": {
+    "images": [
+      {
+        "contentLength": 261333,
+        "resolution": "360x360",
+        "tags": [
+          "thumb"
+        ],
+        "uri": "ulyobjsn_Grid_360.png"
+      },
+      {
+        "contentLength": 354005,
+        "resolution": "420x420",
+        "tags": [
+          "thumb"
+        ],
+        "uri": "ulyobjsn_Grid_420.png"
+      },
+      {
+        "contentLength": 1045310,
+        "resolution": "720x720",
+        "tags": [
+          "thumb",
+          "retina"
+        ],
+        "uri": "ulyobjsn_Grid_720.png"
+      },
+      {
+        "contentLength": 1424263,
+        "resolution": "840x840",
+        "tags": [
+          "thumb",
+          "retina"
+        ],
+        "uri": "ulyobjsn_Grid_840.png"
+      },
+      {
+        "contentLength": 2334004,
+        "resolution": "1440x768",
+        "tags": [
+          "preview",
+          "clay"
+        ],
+        "uri": "ulyobjsn_PopupClay_1440.png"
+      },
+      {
+        "contentLength": 4357727,
+        "resolution": "1920x1080",
+        "tags": [
+          "preview",
+          "clay"
+        ],
+        "uri": "ulyobjsn_PopupClay_1920.png"
+      },
+      {
+        "contentLength": 9310151,
+        "resolution": "2880x1536",
+        "tags": [
+          "preview",
+          "clay",
+          "retina"
+        ],
+        "uri": "ulyobjsn_PopupClay_2880.png"
+      },
+      {
+        "contentLength": 17840104,
+        "resolution": "3840x2160",
+        "tags": [
+          "preview",
+          "clay",
+          "retina"
+        ],
+        "uri": "ulyobjsn_PopupClay_3840.png"
+      },
+      {
+        "contentLength": 2973317,
+        "resolution": "1440x768",
+        "tags": [
+          "preview",
+          "tiled"
+        ],
+        "uri": "ulyobjsn_PopupTiled_1440.png"
+      },
+      {
+        "contentLength": 5583947,
+        "resolution": "1920x1080",
+        "tags": [
+          "preview",
+          "tiled"
+        ],
+        "uri": "ulyobjsn_PopupTiled_1920.png"
+      },
+      {
+        "contentLength": 12044247,
+        "resolution": "2880x1536",
+        "tags": [
+          "preview",
+          "tiled",
+          "retina"
+        ],
+        "uri": "ulyobjsn_PopupTiled_2880.png"
+      },
+      {
+        "contentLength": 22989238,
+        "resolution": "3840x2160",
+        "tags": [
+          "preview",
+          "tiled",
+          "retina"
+        ],
+        "uri": "ulyobjsn_PopupTiled_3840.png"
+      },
+      {
+        "contentLength": 3020634,
+        "resolution": "1440x768",
+        "tags": [
+          "preview"
+        ],
+        "uri": "ulyobjsn_Popup_1440.png"
+      },
+      {
+        "contentLength": 5661265,
+        "resolution": "1920x1080",
+        "tags": [
+          "preview"
+        ],
+        "uri": "ulyobjsn_Popup_1920.png"
+      },
+      {
+        "contentLength": 12080102,
+        "resolution": "2880x1536",
+        "tags": [
+          "preview",
+          "retina"
+        ],
+        "uri": "ulyobjsn_Popup_2880.png"
+      },
+      {
+        "contentLength": 23248388,
+        "resolution": "3840x2160",
+        "tags": [
+          "preview",
+          "retina"
+        ],
+        "uri": "ulyobjsn_Popup_3840.png"
+      }
+    ],
+    "relativeSize": "1x1",
+    "scaleReferences": []
+  },
+  "process_date": "2024-04-17 00:59:58",
+  "properties": [],
+  "referencePreviews": {
+    "maps": [],
+    "models": []
+  },
+  "references": [],
+  "revised": false,
+  "revision": 0,
+  "semanticTags": {
+    "asset_type": "surface",
+    "city": "Gothenburg",
+    "color": [
+      "Brown",
+      "Gray"
+    ],
+    "contains": [
+      "Wood",
+      "Grout",
+      "Nails"
+    ],
+    "country": "Sweden",
+    "descriptive": [
+      "Rough",
+      "Textured",
+      "Weathered",
+      "worn",
+      "clean",
+      "cracked"
+    ],
+    "environment": [
+      "rural"
+    ],
+    "industry": [
+      "archviz",
+      "games",
+      "VFX"
+    ],
+    "interior_exterior": [
+      "exterior"
+    ],
+    "locations": {
+      "Europe": {
+        "Sweden": {
+          "Gothenburg": {}
+        }
+      }
+    },
+    "maxSize": 2,
+    "minSize": 2,
+    "name": "Wooden Planks",
+    "orientation": [
+      "floor"
+    ],
+    "region": "Europe",
+    "state": [
+      "old"
+    ],
+    "subject_matter": "manmade",
+    "theme": [
+      "deck",
+      "Flooring",
+      "cabin",
+      "interiors",
+      "house",
+      "homes",
+      "exteriors",
+      "floors",
+      "cottages",
+      "rural",
+      "Porch",
+      "village",
+      "countryside",
+      "farms",
+      "sheds"
+    ]
+  },
+  "tags": [
+    "brown",
+    "gray",
+    "exterior",
+    "rural",
+    "outdoor",
+    "floor",
+    "wood",
+    "grout",
+    "nails",
+    "rough",
+    "textured",
+    "weathered",
+    "unpolished"
+  ],
+  "texelDensity": 4096,
+  "texture_type": "basic",
+  "ue_plugin_archives": [
+    {
+      "contentLength": 175067686,
+      "gltfVersion": "2.0",
+      "tier": 0,
+      "type": "gltf",
+      "uri": "ue_plugin_archives/tier_0/ulyobjsn_tier_0.zip",
+      "version": 1
+    },
+    {
+      "contentLength": 62810686,
+      "gltfVersion": "2.0",
+      "tier": 1,
+      "type": "gltf",
+      "uri": "ue_plugin_archives/tier_1/ulyobjsn_tier_1.zip",
+      "version": 1
+    },
+    {
+      "contentLength": 15369640,
+      "gltfVersion": "2.0",
+      "tier": 2,
+      "type": "gltf",
+      "uri": "ue_plugin_archives/tier_2/ulyobjsn_tier_2.zip",
+      "version": 1
+    },
+    {
+      "contentLength": 1188365,
+      "gltfVersion": "2.0",
+      "tier": 3,
+      "type": "gltf",
+      "uri": "ue_plugin_archives/tier_3/ulyobjsn_tier_3.zip",
+      "version": 1
+    }
+  ],
+  "version": 2
+}
