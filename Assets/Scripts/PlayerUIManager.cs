@@ -37,6 +37,7 @@ public class PlayerUIManager : MonoBehaviourPun
             UpdateCoins(0);    // Inicializar monedas en 0
         }
     }
+    
 
     // Actualiza el texto de salud en la UI
     // currentHealth: valor actual de la salud del jugador
