@@ -16,7 +16,7 @@ public class HealthDisplay : MonoBehaviour
     void Start()
     {
         // Buscar el jugador local
-        Invoke("FindLocalPlayer", 4);
+        Invoke("FindLocalPlayer", 6);
     }
 
     void FindLocalPlayer()
