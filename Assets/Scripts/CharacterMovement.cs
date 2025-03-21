@@ -9,6 +9,10 @@ public class CharacterMovement : MonoBehaviourPun
     [SerializeField] bool isGrounded = true;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckDistance = 2;
+    [SerializeField] Animator animator;
+    [SerializeField] string MoveAnim;
+    [SerializeField] string IdleAnim;
+    public Vector3 dir;
 
 
     void Awake()
@@ -40,11 +44,16 @@ public class CharacterMovement : MonoBehaviourPun
         }
 
 
-        Vector3 dir = new Vector3(x, y, z);
-        if(dir.magnitude > 0)
+        dir = new Vector3(x, y, z);
+        if(dir.magnitude != 0)
         {
             dir.Normalize();
             controller.Move(dir * pSpeed * Time.deltaTime);
+            animator.Play(MoveAnim);
+        }
+        else
+        {
+            animator.Play(IdleAnim);
         }
     }
 

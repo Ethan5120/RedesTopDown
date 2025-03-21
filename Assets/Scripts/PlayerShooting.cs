@@ -12,12 +12,16 @@ public class PlayerShooting : MonoBehaviourPun
     // Prefab de la bala (debe estar en la carpeta Resources)
     public GameObject bulletPrefab;
 
+    [SerializeField] Animator animator;
+    [SerializeField] string ShootAnim;
+
     void Update()
     {
         // Verifica si el jugador local es el dueño del PhotonView y si presiona el botón de disparo
         if (photonView.IsMine && Input.GetButtonDown("Fire1"))
         {
             Shoot(); // Llama al método para disparar
+            animator.Play(ShootAnim);
         }
     }
 
