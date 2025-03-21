@@ -20,6 +20,9 @@ public class EnemyShooter : MonoBehaviourPun
     private float nextFireTime = 0f;
     private GameObject targetPlayer;
     private float currentHealth;
+    [SerializeField] Animator animator;
+    [SerializeField] string ShootAnim;
+    [SerializeField] string IdleAnim;
 
     private void Start()
     {
@@ -55,9 +58,14 @@ public class EnemyShooter : MonoBehaviourPun
                 if (dot > 0.8f)
                 {
                     Shoot();
+                    animator.Play(ShootAnim);
                     nextFireTime = Time.time + fireRate;
                 }
             }
+        }
+        else
+        {
+            animator.Play(IdleAnim);
         }
     }
 
