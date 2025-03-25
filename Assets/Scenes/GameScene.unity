@@ -1704,6 +1704,7 @@ MonoBehaviour:
   obstaclePrefabs:
   - {fileID: 176199018796571094, guid: 969a3113ed502384fbb27e83cedde0f4, type: 3}
   obstaclePercentage: 10
+  minWallSpacing: 1
   generateCeiling: 0
   canSpawnObstacles: 1
   spawnSpawnPercentage: 20
@@ -1711,7 +1712,8 @@ MonoBehaviour:
     type: 3}
   spawnContainer: {fileID: 1304239927}
   minSpawnSpacing: 5
-  canSpawnSpawns: 1
+  canRandomizeSpawns: 0
+  hasGeneratedFixedSpawns: 0
   itemSpawnPercentage: 25
   itemPrefabs:
   - {fileID: 4579043240809602449, guid: e7f8b071e8a40184ab3e75d9fe1f5c83, type: 3}
