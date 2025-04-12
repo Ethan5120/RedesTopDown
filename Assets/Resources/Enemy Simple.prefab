@@ -1043,16 +1043,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b96d7172a7e2641954c7beac5b1aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1336299925555855304, guid: fbd2036e48664cf4293ce00a3247bf38,
+  projectilePrefab: {fileID: 8271526022817636832, guid: 1f166851dc424aa4bbf299c6a9565d84,
     type: 3}
   firePoint: {fileID: 3741988909383013997}
   fireRate: 1
   detectionRange: 10
   rotationSpeed: 2
-  maxHealth: 100
-  animator: {fileID: 5692543760409344826}
-  ShootAnim: Fire
-  IdleAnim: Idle
 --- !u!136 &5974734723314530175
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1079,12 +1075,6 @@ CapsuleCollider:
 --- !u!4 &1738344063845622080 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d74b1405ff48d074ab1ef0783731bfae,
-    type: 3}
-  m_PrefabInstance: {fileID: 2275848101024499371}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &5692543760409344826 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d74b1405ff48d074ab1ef0783731bfae,
     type: 3}
   m_PrefabInstance: {fileID: 2275848101024499371}
   m_PrefabAsset: {fileID: 0}
