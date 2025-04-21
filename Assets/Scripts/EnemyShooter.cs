@@ -16,6 +16,7 @@ public class EnemyShooter : MonoBehaviourPun
 
     private float nextFireTime = 0f;
     private GameObject targetPlayer;
+    [SerializeField] ParticleSystem[] particles;
 
     private void Start()
     {
@@ -134,8 +135,20 @@ public class EnemyShooter : MonoBehaviourPun
     {
         if (other.CompareTag("Bullet_2"))
         {
-            Debug.Log("Hity");
-            Destroy(gameObject);
+            Debug.Log("Hit");
+            Death();
+        }
+    }
+
+    void Death()
+    {
+        Destroy(gameObject, 0.15f);
+        if(particles != null)
+        {
+            foreach(ParticleSystem particle in particles)
+            {
+                particle.Play();
+            }
         }
     }
 }
