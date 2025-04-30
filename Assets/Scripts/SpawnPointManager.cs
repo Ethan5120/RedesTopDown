@@ -6,7 +6,7 @@ public class SpawnPointManager : MonoBehaviour
     private static SpawnPointManager instance;
     public static SpawnPointManager Instance { get { return instance; } }
 
-    public List<Transform> spawnPoints;
+    public Transform[] spawnPoints;
 
     void Awake()
     {
@@ -18,17 +18,19 @@ public class SpawnPointManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        spawnPoints = GetComponentsInChildren<Transform>();
     }
 
     public Vector3 GetRandomSpawnPoint()
     {
-        if (spawnPoints == null || spawnPoints.Count == 0)
+        if (spawnPoints == null || spawnPoints.Length == 0)
         {
             Debug.LogWarning("No hay spawn points configurados!");
             return Vector3.zero;
         }
         
-        int randomIndex = Random.Range(0, spawnPoints.Count);
+        int randomIndex = Random.Range(0, spawnPoints.Length);
         return spawnPoints[randomIndex].position;
     }
 }

@@ -18,6 +18,10 @@ public class EnemyShooter : MonoBehaviourPun
     private GameObject targetPlayer;
     [SerializeField] ParticleSystem[] particles;
 
+    [SerializeField] AudioSource shootSFX;
+    [SerializeField] AudioSource deadSFX;
+
+
     private void Start()
     {
         transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
@@ -118,6 +122,7 @@ public class EnemyShooter : MonoBehaviourPun
                 projectileComponent.SetDirection(direction);
                 Debug.Log("Proyectil disparado hacia: " + direction);
             }
+            shootSFX.Play();
         }
         catch (System.Exception e)
         {
@@ -148,6 +153,7 @@ public class EnemyShooter : MonoBehaviourPun
             foreach(ParticleSystem particle in particles)
             {
                 particle.Play();
+                deadSFX.Play();
             }
         }
     }

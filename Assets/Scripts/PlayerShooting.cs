@@ -14,6 +14,7 @@ public class PlayerShooting : MonoBehaviourPun
 
     [SerializeField] Animator animator;
     [SerializeField] string ShootAnim;
+    [SerializeField] AudioSource shootSFX;
 
     void Update()
     {
@@ -22,6 +23,7 @@ public class PlayerShooting : MonoBehaviourPun
         {
             Shoot(); // Llama al método para disparar
             animator.Play(ShootAnim);
+            shootSFX.Play();
         }
     }
 

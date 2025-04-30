@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPun
     /// Referencia al gestor de interfaz de usuario del jugador
     /// </summary>
     public PlayerUIManager playerUIManager;
+    [SerializeField] AudioSource music;
 
     /// <summary>
     /// Se ejecuta al iniciar. Configura el estado inicial del juego.

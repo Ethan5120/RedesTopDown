@@ -1,9 +1,11 @@
+using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Unity.AI.Navigation; // Añadir este using para NavMeshSurface
+using Unity.AI.Navigation;
 
+[ExecuteInEditMode]
 public class LevelCreator : MonoBehaviour
 {
     [Header("Level Settings")]
@@ -21,40 +23,43 @@ public class LevelCreator : MonoBehaviour
     [Header("Generation Settings")]
     [Range(0, 100)]
     public int obstaclePercentage = 20; // Porcentaje de generación de obstáculos
-    public float minWallSpacing = 3f; // Espacio mínimo entre paredes
-
     public bool generateCeiling = true; // Indica si se debe generar el techo
-    public bool canSpawnObstacles = false;
-
-    [Header("SpawnPoint Settings")]
-    [Range(0, 100)]
-    public int spawnSpawnPercentage = 15; // Porcentaje de generación de Spawns
-    public GameObject spawnPrefab; // Prefab de spawn
-    public GameObject spawnContainer; // Prefab de spawn
-    public float minSpawnSpacing = 5f; // Espacio mínimo entre Spawns
-    public bool canRandomizeSpawns = false;
-    [SerializeField] bool hasGeneratedFixedSpawns;
 
     [Header("Items Settings")]
     [Range(0, 100)]
     public int itemSpawnPercentage = 10; // Porcentaje de generación de ítems
     public GameObject[] itemPrefabs; // Prefabs de los ítems
     public float minItemSpacing = 3f; // Espacio mínimo entre ítems
-    public bool canSpawnItems = false;
 
     [Header("Enemy Settings")]
     [Range(0, 100)]
     public int enemySpawnPercentage = 15; // Porcentaje de generación de enemigos
     public GameObject[] enemyPrefabs; // Prefabs de los enemigos
     public float minEnemySpacing = 5f; // Espacio mínimo entre enemigos
-    public bool canSpawnEnemies = false;
 
-     [Header("NavMesh Settings")]
+    [Header("NavMesh Settings")]
     public NavMeshSurface navMeshSurface;
     public float navMeshBakeDelay = 0.5f;
 
+    [Header("Terrain Settings")]
+    [Range(0, 100)]
+    public int stonePercentage = 30;
+    // Altura base del suelo (siempre habrá esta cantidad mínima de bloques)
+    public int baseGroundHeight = 1;
+    // Profundidad de la capa de tierra desde la superficie
+    public int dirtLayerDepth = 3;
+    // Altura máxima del terreno desde el nivel base
+    public int maxTerrainHeight = 8;
+    public GameObject stonePrefab;
+    public GameObject dirtPrefab;
+    public float terrainHeightScale = 1f;
+    public float noiseScale = 0.1f;
 
     
+    [Header("SpawnPoint Settings")]
+    public GameObject spawnPrefab; // Prefab de spawn
+    public GameObject spawnContainer; // Prefab de spawn
+    [SerializeField] bool hasGeneratedSpawns;
 
     private List<Vector2> occupiedPositions = new List<Vector2>(); // Lista de posiciones ocupadas
 
@@ -70,78 +75,101 @@ public class LevelCreator : MonoBehaviour
         Wall, // Bloque de pared
         Item, // Bloque de ítem
         Enemy, // Bloque de enemigo
-        Spawn // Bloque de Spawn
+        Stone,
+        Dirt,
+        Spawn
     }
+
+    private GameObject currentLevelContainer;
 
     private void Start()
     {
-        hasGeneratedFixedSpawns = false;
-        GenerateLevel(); // Generar el nivel al iniciar
+        // Remove automatic generation on Start
+    }
+
+    public void DestroyCurrentLevel()
+    {
+        if (currentLevelContainer != null)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(currentLevelContainer);
+                for(int i = spawnContainer.transform.childCount - 1; i >= 0; i--)
+                {
+                    Destroy(spawnContainer.transform.GetChild(i).gameObject);
+                }
+            }
+            else
+            {
+                DestroyImmediate(currentLevelContainer);
+                for(int i = spawnContainer.transform.childCount - 1; i >= 0; i--)
+                {
+                    DestroyImmediate(spawnContainer.transform.GetChild(i).gameObject);
+                }
+            }
+            occupiedPositions.Clear();
+            gridObjects.Clear();
+            gridBlockTypes.Clear();
+        }
     }
 
     void GenerateLevel()
     {
-        occupiedPositions.Clear();
-        gridObjects.Clear();
-        gridBlockTypes.Clear();
-        GameObject levelContainer = new GameObject("GeneratedLevel");
-        levelContainer.transform.parent = transform;
+        DestroyCurrentLevel();
+        currentLevelContainer = new GameObject("GeneratedLevel");
+        currentLevelContainer.transform.parent = transform;
 
-        // Generar suelo y objetos
+        // Generar terreno con ruido Perlin
+        float[,] heightMap = GenerateHeightMap();
+
+        // Generar capas del terreno
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < length; z++)
             {
-                Vector3 position = new Vector3(x * roomSize, 0, z * roomSize);
-                GameObject floor = Instantiate(floorPrefab, position, Quaternion.identity);
-                floor.transform.parent = levelContainer.transform;
-                
-                AddToGrid(new Vector2Int(x, z), floor, BlockType.Floor);
+                int terrainHeight = Mathf.RoundToInt(heightMap[x, z] * terrainHeightScale);
 
-                // Intentar Generar spawns
-                if (canRandomizeSpawns)
+                // Generar capas
+                for (int y = 0; y <= terrainHeight; y++)
                 {
-                    if(Random.Range(0, 100) < spawnSpawnPercentage)
-                    {
-                        TryGenerateSpawnPoint(x, z, spawnContainer);
-                    }
+                    GenerateBlock(x, y, z, terrainHeight, currentLevelContainer);
                 }
-                else if(!hasGeneratedFixedSpawns)
+
+
+                // Generar recursos y elementos adicionales solo en la superficie
+                if (Random.Range(0, 100) < itemSpawnPercentage && IsPositionValid(x, z, minItemSpacing))
                 {
-                    GenerateFixedSpawnPoint(spawnContainer);
+                    Vector3 itemPos = new Vector3(x * roomSize, (terrainHeight + 1) * roomSize, z * roomSize);
+                    SpawnItem(itemPos, currentLevelContainer);
                 }
-                // Generar obstáculos
-                if (Random.Range(0, 100) < obstaclePercentage && canSpawnObstacles)
+
+                if (Random.Range(0, 100) < enemySpawnPercentage && IsPositionValid(x, z, minEnemySpacing))
                 {
-                    TryGenerateObstacle(x, z, levelContainer);
-                }
-                
-                // Intentar generar item si no hay obstáculo
-                if (Random.Range(0, 100) < itemSpawnPercentage && canSpawnItems)
-                {
-                    TrySpawnItem(x, z, levelContainer);
-                }
-                // Intentar generar enemigo
-                if (Random.Range(0, 100) < enemySpawnPercentage && canSpawnEnemies)
-                {
-                    TrySpawnEnemy(x, z, levelContainer);
+                    Vector3 enemyPos = new Vector3(x * roomSize, (terrainHeight + 1.5f) * roomSize, z * roomSize);
+                    SpawnEnemy(enemyPos, currentLevelContainer);
                 }
             }
         }
 
+        
+
         // Generar paredes exteriores
-        GenerateWalls(levelContainer);
+        GenerateWalls(currentLevelContainer);
+
+        //Generar Spawns
+        GenerateFixedSpawnPoint();
+        
 
         // Generar techo si está activado
         if (generateCeiling)
         {
-            GenerateCeiling(levelContainer);
+            GenerateCeiling(currentLevelContainer);
         }
 
         // Añadir NavMeshSurface si no existe
         if (navMeshSurface == null)
         {
-            navMeshSurface = levelContainer.AddComponent<NavMeshSurface>();
+            navMeshSurface = currentLevelContainer.AddComponent<NavMeshSurface>();
             navMeshSurface.collectObjects = CollectObjects.All;
             navMeshSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
         }
@@ -154,13 +182,42 @@ public class LevelCreator : MonoBehaviour
     {
         // Esperar a que todos los objetos estén en su lugar
         yield return new WaitForSeconds(navMeshBakeDelay);
-        
+
         // Construir el NavMesh
         navMeshSurface.BuildNavMesh();
-        
+
         // Añadir NavMeshAgent a los enemigos
         SetupEnemyNavigation();
     }
+
+    private void GenerateFixedSpawnPoint()
+    {
+        Vector3 spawnPosition = new Vector3(0, maxHeight, 0);
+        GameObject spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
+        spawn.transform.parent = spawnContainer.transform;
+        occupiedPositions.Add(new Vector2(0, 0));
+        AddToGrid(new Vector2Int(0, 0), spawn, BlockType.Spawn);
+
+        spawnPosition = new Vector3(width-1 * roomSize, maxHeight, 0);
+        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
+        spawn.transform.parent = spawnContainer.transform;
+        occupiedPositions.Add(new Vector2(width-1, 0));
+        AddToGrid(new Vector2Int(width-1, 0), spawn, BlockType.Spawn);
+
+        spawnPosition = new Vector3(0, maxHeight, length - 1 * roomSize);
+        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
+        spawn.transform.parent = spawnContainer.transform;
+        occupiedPositions.Add(new Vector2(0, length - 1));
+        AddToGrid(new Vector2Int(0, length - 1), spawn, BlockType.Spawn);
+
+        spawnPosition = new Vector3(width-1 * roomSize, maxHeight, length - 1 * roomSize);
+        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
+        spawn.transform.parent = spawnContainer.transform;
+        occupiedPositions.Add(new Vector2(width-1, length - 1));
+        AddToGrid(new Vector2Int(width-1, length - 1), spawn, BlockType.Spawn);
+        
+    }
+
 
     void SetupEnemyNavigation()
     {
@@ -177,23 +234,92 @@ public class LevelCreator : MonoBehaviour
         }
     }
 
-    private void TryGenerateObstacle(int x, int z, GameObject container)
+    private float[,] GenerateHeightMap()
     {
-        if (IsPositionValid(x, z, minWallSpacing))
+        float[,] heightMap = new float[width, length];
+        float offsetX = Random.Range(0f, 1000f);
+        float offsetZ = Random.Range(0f, 1000f);
+
+        for (int x = 0; x < width; x++)
         {
-            float height = Random.Range(1, maxHeight);
-            for (int y = 1; y <= height; y++)
+            for (int z = 0; z < length; z++)
             {
-                Vector3 obstaclePos = new Vector3(x * roomSize, y * roomSize, z * roomSize);
-                GameObject obstacle = Instantiate(
-                    obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)],
-                    obstaclePos,
-                    Quaternion.identity
-                );
-                obstacle.transform.parent = container.transform;
-                AddToGrid(new Vector2Int(x, z), obstacle, BlockType.Obstacle);
+                float xCoord = (float)x * noiseScale + offsetX;
+                float zCoord = (float)z * noiseScale + offsetZ;
+                // Ajusta el ruido para que esté entre baseGroundHeight y maxTerrainHeight
+                float noise = Mathf.PerlinNoise(xCoord, zCoord);
+                heightMap[x, z] = Mathf.Lerp(baseGroundHeight, maxTerrainHeight, noise);
             }
-            occupiedPositions.Add(new Vector2(x, z));
+        }
+
+        return heightMap;
+    }
+
+    private void GenerateBlock(int x, int y, int z, int surfaceHeight, GameObject container)
+    {
+        Vector3 position = new Vector3(x * roomSize, y * roomSize, z * roomSize);
+        GameObject block;
+
+        // Calcula la profundidad desde la superficie
+        int depthFromSurface = surfaceHeight - y;
+
+        if (y == 0)
+        {
+            // Capa base (bedrock)
+            block = Instantiate(floorPrefab, position, Quaternion.identity);
+            AddToGrid(new Vector2Int(x, z), block, BlockType.Floor);
+        }
+        else if (depthFromSurface <= dirtLayerDepth && y < surfaceHeight)
+        {
+            // Capa de tierra (desde la superficie hacia abajo)
+            block = Instantiate(dirtPrefab, position, Quaternion.identity);
+            AddToGrid(new Vector2Int(x, z), block, BlockType.Dirt);
+        }
+        else
+        {
+            // Piedra (todo lo demás)
+            block = Instantiate(stonePrefab, position, Quaternion.identity);
+            AddToGrid(new Vector2Int(x, z), block, BlockType.Stone);
+        }
+
+        block.transform.parent = container.transform;
+    }
+
+    private void SpawnItem(Vector3 position, GameObject container)
+    {
+        GameObject item = Instantiate(
+            itemPrefabs[Random.Range(0, itemPrefabs.Length)],
+            position,
+            Quaternion.identity
+        );
+        item.transform.parent = container.transform;
+        AddToGrid(new Vector2Int((int)(position.x / roomSize), (int)(position.z / roomSize)), item, BlockType.Item);
+    }
+
+    private void SpawnEnemy(Vector3 position, GameObject container)
+    {
+        GameObject enemy = Instantiate(
+            enemyPrefabs[Random.Range(0, enemyPrefabs.Length)],
+            position,
+            Quaternion.identity
+        );
+        enemy.transform.parent = container.transform;
+        AddToGrid(new Vector2Int((int)(position.x / roomSize), (int)(position.z / roomSize)), enemy, BlockType.Enemy);
+    }
+
+    private void GenerateObstacle(int x, int z, GameObject container)
+    {
+        float height = Random.Range(1, maxHeight);
+        for (int y = 1; y <= height; y++)
+        {
+            Vector3 obstaclePos = new Vector3(x * roomSize, y * roomSize, z * roomSize);
+            GameObject obstacle = Instantiate(
+                obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)],
+                obstaclePos,
+                Quaternion.identity
+            );
+            obstacle.transform.parent = container.transform;
+            AddToGrid(new Vector2Int(x, z), obstacle, BlockType.Obstacle);
         }
     }
 
@@ -202,9 +328,9 @@ public class LevelCreator : MonoBehaviour
         // Verificar si hay espacio suficiente
         if (IsPositionValid(x, z, minItemSpacing))
         {
-            Vector3 itemPosition = new Vector3(x * roomSize, roomSize * 1f, z * roomSize);
+            Vector3 itemPosition = new Vector3(x * roomSize, roomSize * 1.8f, z * roomSize);
             GameObject item = Instantiate(
-                itemPrefabs[0],
+                itemPrefabs[Random.Range(0, itemPrefabs.Length)],
                 itemPosition,
                 Quaternion.identity
             );
@@ -221,7 +347,7 @@ public class LevelCreator : MonoBehaviour
         if (IsPositionValid(x, z, minEnemySpacing))
         {
             // Ajustamos la altura a 0.1f para que esté justo sobre el suelo
-            Vector3 enemyPosition = new Vector3(x * roomSize, 0.6f, z * roomSize);
+            Vector3 enemyPosition = new Vector3(x * roomSize, 1.5f, z * roomSize);
             GameObject enemy = Instantiate(
                 enemyPrefabs[Random.Range(0, enemyPrefabs.Length)],
                 enemyPosition,
@@ -233,54 +359,6 @@ public class LevelCreator : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    private bool TryGenerateSpawnPoint(int x, int z, GameObject container)
-    {
-        if (IsPositionValid(x, z, minSpawnSpacing))
-        {
-            // Ajustamos la altura a 0.1f para que esté justo sobre el suelo
-            Vector3 spawnPosition = new Vector3(x * roomSize, 2f, z * roomSize);
-            GameObject spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
-            spawn.transform.parent = container.transform;
-            occupiedPositions.Add(new Vector2(x, z));
-            AddToGrid(new Vector2Int(x, z), spawn, BlockType.Spawn);
-            SpawnPointManager.Instance.spawnPoints.Add(spawn.transform);
-            return true;
-        }
-        return false;
-    }
-    private void GenerateFixedSpawnPoint(GameObject container)
-    {
-        Vector3 spawnPosition = new Vector3(0 * roomSize, 1f, 0 * roomSize);
-        GameObject spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
-        spawn.transform.parent = container.transform;
-        occupiedPositions.Add(new Vector2(0, 0));
-        AddToGrid(new Vector2Int(0, 0), spawn, BlockType.Spawn);
-        SpawnPointManager.Instance.spawnPoints.Add(spawn.transform);
-
-        spawnPosition = new Vector3(width-1 * roomSize, 1f, 0 * roomSize);
-        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
-        spawn.transform.parent = container.transform;
-        occupiedPositions.Add(new Vector2(0, 0));
-        AddToGrid(new Vector2Int(0, 0), spawn, BlockType.Spawn);
-        SpawnPointManager.Instance.spawnPoints.Add(spawn.transform);
-
-        spawnPosition = new Vector3(0 * roomSize, 1f, length - 1 * roomSize);
-        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
-        spawn.transform.parent = container.transform;
-        occupiedPositions.Add(new Vector2(0, 0));
-        AddToGrid(new Vector2Int(0, 0), spawn, BlockType.Spawn);
-        SpawnPointManager.Instance.spawnPoints.Add(spawn.transform);
-
-        spawnPosition = new Vector3(width-1 * roomSize, 1f, length - 1 * roomSize);
-        spawn = Instantiate( spawnPrefab, spawnPosition, Quaternion.identity);
-        spawn.transform.parent = container.transform;
-        occupiedPositions.Add(new Vector2(0, 0));
-        AddToGrid(new Vector2Int(0, 0), spawn, BlockType.Spawn);
-        SpawnPointManager.Instance.spawnPoints.Add(spawn.transform);
-        
-        hasGeneratedFixedSpawns = true;
     }
 
     private void AddToGrid(Vector2Int gridPosition, GameObject obj, BlockType type)
@@ -309,7 +387,7 @@ public class LevelCreator : MonoBehaviour
     public Dictionary<Vector2Int, List<GameObject>> GetObjectsInRadius(Vector2Int center, int radius)
     {
         Dictionary<Vector2Int, List<GameObject>> result = new Dictionary<Vector2Int, List<GameObject>>();
-        
+
         for (int x = -radius; x <= radius; x++)
         {
             for (int z = -radius; z <= radius; z++)
@@ -321,7 +399,7 @@ public class LevelCreator : MonoBehaviour
                 }
             }
         }
-        
+
         return result;
     }
 
@@ -347,7 +425,7 @@ public class LevelCreator : MonoBehaviour
             {
                 Vector3 pos1 = new Vector3(x * roomSize, y * roomSize, -1 * roomSize);
                 Vector3 pos2 = new Vector3(x * roomSize, y * roomSize, length * roomSize);
-                
+
                 Instantiate(wallPrefab, pos1, Quaternion.identity).transform.parent = container.transform;
                 Instantiate(wallPrefab, pos2, Quaternion.identity).transform.parent = container.transform;
                 AddToGrid(new Vector2Int(x, -1), wallPrefab, BlockType.Wall);
@@ -362,7 +440,7 @@ public class LevelCreator : MonoBehaviour
             {
                 Vector3 pos1 = new Vector3(-1 * roomSize, y * roomSize, z * roomSize);
                 Vector3 pos2 = new Vector3(width * roomSize, y * roomSize, z * roomSize);
-                
+
                 Instantiate(wallPrefab, pos1, Quaternion.identity).transform.parent = container.transform;
                 Instantiate(wallPrefab, pos2, Quaternion.identity).transform.parent = container.transform;
                 AddToGrid(new Vector2Int(-1, z), wallPrefab, BlockType.Wall);
@@ -384,4 +462,27 @@ public class LevelCreator : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(LevelCreator))]
+    public class LevelCreatorEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+
+            LevelCreator levelCreator = (LevelCreator)target;
+
+            if (GUILayout.Button("Generate Level"))
+            {
+                levelCreator.GenerateLevel();
+            }
+
+            if (GUILayout.Button("Destroy Level"))
+            {
+                levelCreator.DestroyCurrentLevel();
+            }
+        }
+    }
+#endif
 }
